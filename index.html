@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auditoría IA Express para Asesorías</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #361396;
+    --primary-dark: #250e6e;
+    --primary-light: #4a1db8;
+    --accent: #FACC15;
+    --accent-dark: #d4a90e;
+    --bg: #f8f7ff;
+    --bg-card: #ffffff;
+    --text: #1a1025;
+    --text-muted: #5a5070;
+    --border: #e0daf5;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── UTILS ── */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  .tag {
+    display: inline-block;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--primary-dark);
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 18px;
+  }
+  h1, h2, h3 { font-family: 'Syne', sans-serif; line-height: 1.15; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(248,247,255,.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+  }
+  .nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 15px;
+    color: var(--primary);
+  }
+  .nav-logo span { color: var(--accent-dark); }
+  .btn-nav {
+    background: var(--primary);
+    color: #fff;
+    border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500;
+    padding: 9px 20px;
+    border-radius: 8px;
+    transition: background .2s;
+    white-space: nowrap;
+  }
+  .btn-nav:hover { background: var(--primary-light); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--primary);
+    color: #fff;
+    padding: 80px 24px 90px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 80% 20%, rgba(250,204,21,.18) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 80% at -10% 90%, rgba(74,29,184,.6) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 900px; margin: 0 auto;
+    position: relative;
+  }
+  .hero .tag { background: rgba(250,204,21,.2); color: var(--accent); }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    max-width: 700px;
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero p {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: rgba(255,255,255,.82);
+    max-width: 540px;
+    margin-bottom: 36px;
+  }
+  .hero-btns {
+    display: flex; flex-wrap: wrap; gap: 12px;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--primary-dark);
+    border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px; font-weight: 700;
+    padding: 14px 28px;
+    border-radius: 10px;
+    transition: transform .15s, background .2s;
+    letter-spacing: .01em;
+  }
+  .btn-primary:hover { background: #fbd842; transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,.35);
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px; font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 10px;
+    transition: border-color .2s, background .2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,.7); background: rgba(255,255,255,.06); }
+
+  /* ── SECTIONS SHARED ── */
+  section { padding: 72px 0; }
+  section.alt { background: var(--bg-card); }
+
+  .section-header { margin-bottom: 42px; }
+  .section-header h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .section-header p { color: var(--text-muted); font-size: 1.05rem; max-width: 520px; }
+
+  /* ── PROBLEMA ── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .problem-card {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 20px;
+    position: relative;
+  }
+  .problem-card::before {
+    content: '✕';
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #e53e3e;
+    margin-bottom: 10px;
+    opacity: .7;
+  }
+  .problem-card p {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
+  /* ── ENTREGABLE ── */
+  #entregable { background: var(--bg-card); }
+  .entregable-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
+  .entregable-list li {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .entregable-icon {
+    width: 36px; height: 36px; flex-shrink: 0;
+    background: var(--primary);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+  }
+  .entregable-list li strong {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px; font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .entregable-list li span { font-size: 14px; color: var(--text-muted); }
+
+  .btn-cta {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 700;
+    padding: 15px 34px;
+    border-radius: 10px;
+    letter-spacing: .02em;
+    transition: background .2s, transform .15s;
+  }
+  .btn-cta:hover { background: var(--primary-light); transform: translateY(-2px); }
+
+  /* ── PARA QUIÉN ── */
+  .para-quien-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  .para-quien-text p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.75; margin-bottom: 14px; }
+  .para-quien-check { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .para-quien-check li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 15px; font-weight: 500;
+  }
+  .para-quien-check li::before {
+    content: '✓';
+    display: flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; flex-shrink: 0;
+    background: var(--accent);
+    color: var(--primary-dark);
+    font-weight: 800; font-size: 13px;
+    border-radius: 50%;
+  }
+
+  /* ── FORMULARIO ── */
+  #form { background: var(--primary); color: #fff; }
+  #form .section-header h2 { color: #fff; }
+  #form .section-header p { color: rgba(255,255,255,.7); }
+  #form .tag { background: rgba(250,204,21,.2); color: var(--accent); }
+
+  .form-card {
+    background: rgba(255,255,255,.07);
+    border: 1.5px solid rgba(255,255,255,.15);
+    border-radius: 18px;
+    padding: 36px;
+    max-width: 620px;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label {
+    font-size: 13px; font-weight: 500;
+    color: rgba(255,255,255,.75);
+    letter-spacing: .02em;
+  }
+  .form-group select,
+  .form-group input {
+    background: rgba(255,255,255,.1);
+    border: 1.5px solid rgba(255,255,255,.2);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    padding: 11px 14px;
+    border-radius: 9px;
+    outline: none;
+    transition: border-color .2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .form-group select:focus,
+  .form-group input:focus { border-color: var(--accent); }
+  .form-group select option { background: var(--primary-dark); color: #fff; }
+  .form-group input::placeholder { color: rgba(255,255,255,.4); }
+
+  .btn-submit {
+    width: 100%;
+    background: var(--accent);
+    color: var(--primary-dark);
+    border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 800;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 22px;
+    letter-spacing: .02em;
+    transition: background .2s, transform .15s;
+  }
+  .btn-submit:hover { background: #fbd842; transform: translateY(-2px); }
+
+  #form-success {
+    display: none;
+    background: rgba(250,204,21,.15);
+    border: 1.5px solid rgba(250,204,21,.4);
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-size: 16px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-top: 20px;
+    font-family: 'Syne', sans-serif;
+  }
+
+  /* ── FAQ ── */
+  .faq-list { display: flex; flex-direction: column; gap: 16px; max-width: 680px; }
+  .faq-item {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .faq-question {
+    width: 100%;
+    background: var(--bg-card);
+    border: none; cursor: pointer;
+    text-align: left;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--text);
+    padding: 20px 22px;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    transition: background .2s;
+  }
+  .faq-question:hover { background: var(--bg); }
+  .faq-question .faq-icon {
+    width: 28px; height: 28px; flex-shrink: 0;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 300;
+    transition: transform .25s;
+  }
+  .faq-answer {
+    max-height: 0; overflow: hidden;
+    transition: max-height .35s ease, padding .25s;
+    background: var(--bg-card);
+    font-size: 15px; color: var(--text-muted); line-height: 1.7;
+    padding: 0 22px;
+  }
+  .faq-answer.open {
+    max-height: 300px;
+    padding: 0 22px 20px;
+  }
+  .faq-question.open .faq-icon { transform: rotate(45deg); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,.5);
+    text-align: center;
+    padding: 28px 24px;
+    font-size: 13px;
+  }
+  footer strong { color: rgba(255,255,255,.8); font-family: 'Syne', sans-serif; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 660px) {
+    .para-quien-inner { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: 1; }
+    .form-card { padding: 24px 18px; }
+  }
+  @media (max-width: 440px) {
+    .problem-grid { grid-template-columns: 1fr 1fr; }
+    .hero { padding: 60px 24px 70px; }
+    section { padding: 54px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Auditoría<span>IA</span></div>
+    <button class="btn-nav" onclick="scrollTo('#form')">Quiero mi auditoría</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="tag">Gratis · Sin compromiso</div>
+    <h1>Auditoría <em>IA Express</em><br>para Asesorías</h1>
+    <p>Detecta 3 automatizaciones gratuitas para ahorrar horas cada semana.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="scrollTo('#form')">Quiero mi auditoría</button>
+      <button class="btn-secondary" onclick="scrollTo('#entregable')">Ver qué incluye</button>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="tag">El problema</div>
+      <h2>¿Reconoces alguna de estas situaciones?</h2>
+      <p>Las asesorías pierden horas cada semana en tareas repetitivas que ya tienen solución.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card"><p>Emails repetitivos que se responden siempre igual</p></div>
+      <div class="problem-card"><p>Documentos creados manualmente uno a uno</p></div>
+      <div class="problem-card"><p>Facturas llegando por múltiples canales sin orden</p></div>
+      <div class="problem-card"><p>Recordatorios fiscales gestionados a mano</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTREGABLE -->
+<section id="entregable" class="alt">
+  <div class="container">
+    <div class="section-header">
+      <div class="tag">Qué incluye</div>
+      <h2>Tu auditoría incluye exactamente esto</h2>
+      <p>Un análisis personalizado y accionable, listo en 24–48 horas.</p>
+    </div>
+    <ul class="entregable-list">
+      <li>
+        <div class="entregable-icon">🏆</div>
+        <div>
+          <strong>Top 3 automatizaciones para tu despacho</strong>
+          <span>Seleccionadas según tu flujo de trabajo y tamaño de equipo.</span>
+        </div>
+      </li>
+      <li>
+        <div class="entregable-icon">🛠️</div>
+        <div>
+          <strong>Herramientas nocode gratuitas</strong>
+          <span>Sin necesidad de programar ni contratar a nadie externo.</span>
+        </div>
+      </li>
+      <li>
+        <div class="entregable-icon">⏱️</div>
+        <div>
+          <strong>Estimación de tiempo ahorrado</strong>
+          <span>Cuántas horas semanales podrías recuperar al implementarlas.</span>
+        </div>
+      </li>
+      <li>
+        <div class="entregable-icon">🔄</div>
+        <div>
+          <strong>Flujo antes → después</strong>
+          <span>Visualización clara de cómo quedaría cada proceso automatizado.</span>
+        </div>
+      </li>
+    </ul>
+    <button class="btn-cta" onclick="scrollTo('#form')">Empezar auditoría</button>
+  </div>
+</section>
+
+<!-- PARA QUIÉN -->
+<section>
+  <div class="container">
+    <div class="para-quien-inner">
+      <div class="para-quien-text">
+        <div class="tag">Para quién es</div>
+        <h2>Pensado para asesorías pequeñas</h2>
+        <p>Si llevas una asesoría fiscal, laboral o contable con un equipo reducido, sabes que cada hora cuenta. Esta auditoría está diseñada específicamente para despachos que aún no han dado el salto a la automatización.</p>
+        <p>No necesitas conocimientos técnicos ni presupuesto extra. Solo responder unas preguntas.</p>
+      </div>
+      <ul class="para-quien-check">
+        <li>Despachos de 1 a 15 personas</li>
+        <li>Sin departamento de IT propio</li>
+        <li>Con procesos manuales repetitivos</li>
+        <li>Que quieren crecer sin contratar más</li>
+        <li>Con ganas de mejorar sin complicaciones</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULARIO -->
+<section id="form">
+  <div class="container">
+    <div class="section-header">
+      <div class="tag">Solicitar auditoría</div>
+      <h2>Cuéntanos sobre tu despacho</h2>
+      <p>Solo 5 preguntas rápidas. Recibirás tu propuesta personalizada en 24–48 horas.</p>
+    </div>
+    <div class="form-card">
+      <form id="auditoria-form" novalidate>
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="tamano">Tamaño del despacho</label>
+            <select id="tamano" name="tamano" required>
+              <option value="" disabled selected>Selecciona…</option>
+              <option>1 persona (autónomo)</option>
+              <option>2–5 personas</option>
+              <option>6–10 personas</option>
+              <option>11–15 personas</option>
+              <option>Más de 15</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="software">Software principal</label>
+            <select id="software" name="software" required>
+              <option value="" disabled selected>Selecciona…</option>
+              <option>A3 / Wolters Kluwer</option>
+              <option>Sage</option>
+              <option>Holded</option>
+              <option>Contaplus / Sage 50</option>
+              <option>Excel / manual</option>
+              <option>Otro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="emails">Emails diarios aproximados</label>
+            <select id="emails" name="emails" required>
+              <option value="" disabled selected>Selecciona…</option>
+              <option>Menos de 20</option>
+              <option>20–50</option>
+              <option>50–100</option>
+              <option>Más de 100</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="tiempo">Tiempo en tareas admin al día</label>
+            <select id="tiempo" name="tiempo" required>
+              <option value="" disabled selected>Selecciona…</option>
+              <option>Menos de 1 hora</option>
+              <option>1–2 horas</option>
+              <option>2–4 horas</option>
+              <option>Más de 4 horas</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label for="email">Email de contacto</label>
+            <input type="email" id="email" name="email" placeholder="tu@correo.com" required>
+          </div>
+
+        </div>
+        <button type="submit" class="btn-submit">Enviar y recibir propuesta →</button>
+      </form>
+      <div id="form-success">✅ Datos enviados. Recibirás tu auditoría en 24–48h.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="alt">
+  <div class="container">
+    <div class="section-header">
+      <div class="tag">FAQ</div>
+      <h2>Preguntas frecuentes</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿La auditoría es realmente gratuita?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          Sí, completamente gratuita y sin compromiso. Recibirás un análisis personalizado con 3 automatizaciones recomendadas para tu despacho, las herramientas para implementarlas y la estimación de tiempo que podrías ahorrar. No hay coste oculto ni venta posterior forzosa.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ¿Necesito conocimientos técnicos para aplicar las recomendaciones?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          No. Todas las automatizaciones recomendadas utilizan herramientas nocode diseñadas para personas sin perfil técnico. Incluimos guías paso a paso y seleccionamos siempre las opciones más sencillas de implementar para un despacho como el tuyo.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Auditoría IA Express para Asesorías</strong><br>
+  <span>© 2025 · Todos los derechos reservados</span>
+</footer>
+
+<script>
+  // Scroll suave a selector
+  function scrollTo(selector) {
+    const el = document.querySelector(selector);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // FAQ toggle
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = answer.classList.contains('open');
+    // Cerrar todos
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-question').forEach(b => b.classList.remove('open'));
+    // Abrir si estaba cerrado
+    if (!isOpen) {
+      answer.classList.add('open');
+      btn.classList.add('open');
+    }
+  }
+
+  // Formulario
+  document.getElementById('auditoria-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = this;
+    const success = document.getElementById('form-success');
+    // Mostrar mensaje
+    success.style.display = 'block';
+    // Limpiar campos
+    form.reset();
+    // Scroll al mensaje
+    success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+</script>
+</body>
+</html>
