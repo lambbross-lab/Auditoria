@@ -3,632 +3,1013 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auditoría IA Express para Asesorías</title>
+<title>Diagnóstico Operativo Express 48h</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --primary: #361396;
-    --primary-dark: #250e6e;
-    --primary-light: #4a1db8;
-    --accent: #FACC15;
-    --accent-dark: #d4a90e;
-    --bg: #f8f7ff;
-    --bg-card: #ffffff;
-    --text: #1a1025;
-    --text-muted: #5a5070;
-    --border: #e0daf5;
-  }
+/* ══════════════════════════════════════════
+   DIAGNÓSTICO OPERATIVO EXPRESS 48H  v3
+   Azul + Amarillo · Premium · Sin frameworks
+   ══════════════════════════════════════════ */
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-  html { scroll-behavior: smooth; font-size: 16px; }
+/* ── TOKENS ── */
+:root {
+  /* Brand core */
+  --p:        #361396;
+  --p-dark:   #260f70;
+  --p-mid:    #4a1db8;
+  --p-light:  #f0edfa;
+  --p-pale:   #f8f6fe;
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+  --y:        #FACC15;
+  --y-dark:   #d4a90e;
+  --y-pale:   #fefce8;
 
-  /* ── UTILS ── */
-  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
-  .tag {
-    display: inline-block;
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    background: var(--accent);
-    color: var(--primary-dark);
-    padding: 4px 12px;
-    border-radius: 100px;
-    margin-bottom: 18px;
-  }
-  h1, h2, h3 { font-family: 'Syne', sans-serif; line-height: 1.15; }
+  /* Neutrals */
+  --ink:      #0d0b12;
+  --ink-2:    #2d2a38;
+  --ink-3:    #5c5870;
+  --ink-4:    #9b98aa;
 
-  /* ── NAV ── */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(248,247,255,.92);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 24px;
-  }
-  .nav-inner {
-    max-width: 900px; margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  }
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800; font-size: 15px;
-    color: var(--primary);
-  }
-  .nav-logo span { color: var(--accent-dark); }
-  .btn-nav {
-    background: var(--primary);
-    color: #fff;
-    border: none; cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 500;
-    padding: 9px 20px;
-    border-radius: 8px;
-    transition: background .2s;
-    white-space: nowrap;
-  }
-  .btn-nav:hover { background: var(--primary-light); }
+  --bg:       #f8f7fc;   /* very faint purple-white */
+  --white:    #ffffff;
 
-  /* ── HERO ── */
-  .hero {
-    background: var(--primary);
-    color: #fff;
-    padding: 80px 24px 90px;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 70% 60% at 80% 20%, rgba(250,204,21,.18) 0%, transparent 70%),
-                radial-gradient(ellipse 50% 80% at -10% 90%, rgba(74,29,184,.6) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .hero-inner {
-    max-width: 900px; margin: 0 auto;
-    position: relative;
-  }
-  .hero .tag { background: rgba(250,204,21,.2); color: var(--accent); }
-  .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.4rem);
-    font-weight: 800;
-    max-width: 700px;
-    margin-bottom: 20px;
-    line-height: 1.1;
-  }
-  .hero h1 em {
-    font-style: normal;
-    color: var(--accent);
-  }
-  .hero p {
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
-    color: rgba(255,255,255,.82);
-    max-width: 540px;
-    margin-bottom: 36px;
-  }
-  .hero-btns {
-    display: flex; flex-wrap: wrap; gap: 12px;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: var(--primary-dark);
-    border: none; cursor: pointer;
-    font-family: 'Syne', sans-serif;
-    font-size: 15px; font-weight: 700;
-    padding: 14px 28px;
-    border-radius: 10px;
-    transition: transform .15s, background .2s;
-    letter-spacing: .01em;
-  }
-  .btn-primary:hover { background: #fbd842; transform: translateY(-2px); }
-  .btn-secondary {
-    background: transparent;
-    color: #fff;
-    border: 2px solid rgba(255,255,255,.35);
-    cursor: pointer;
-    font-family: 'Syne', sans-serif;
-    font-size: 15px; font-weight: 600;
-    padding: 12px 28px;
-    border-radius: 10px;
-    transition: border-color .2s, background .2s;
-  }
-  .btn-secondary:hover { border-color: rgba(255,255,255,.7); background: rgba(255,255,255,.06); }
+  --border:   rgba(54,19,150,.1);
+  --border-n: rgba(0,0,0,.07);
 
-  /* ── SECTIONS SHARED ── */
-  section { padding: 72px 0; }
-  section.alt { background: var(--bg-card); }
+  /* Shadows */
+  --sh-xs: 0 1px 3px rgba(54,19,150,.06);
+  --sh-sm: 0 3px 10px rgba(54,19,150,.09), 0 1px 3px rgba(54,19,150,.05);
+  --sh-md: 0 8px 28px rgba(54,19,150,.12), 0 2px 8px rgba(54,19,150,.06);
 
-  .section-header { margin-bottom: 42px; }
-  .section-header h2 {
-    font-size: clamp(1.6rem, 3.5vw, 2.3rem);
-    font-weight: 800;
-    margin-bottom: 10px;
-  }
-  .section-header p { color: var(--text-muted); font-size: 1.05rem; max-width: 520px; }
+  /* Type */
+  --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --sans:  'DM Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
-  /* ── PROBLEMA ── */
-  .problem-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 16px;
-    margin-top: 8px;
-  }
-  .problem-card {
-    background: var(--bg);
-    border: 1.5px solid var(--border);
-    border-radius: 14px;
-    padding: 24px 20px;
-    position: relative;
-  }
-  .problem-card::before {
-    content: '✕';
-    display: block;
-    font-family: 'Syne', sans-serif;
-    font-size: 22px;
-    font-weight: 800;
-    color: #e53e3e;
-    margin-bottom: 10px;
-    opacity: .7;
-  }
-  .problem-card p {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--text);
-  }
+  --r:    8px;
+  --r-lg: 12px;
+  --max:  1080px;
+}
+/* ── BASE ── */
+body {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
 
-  /* ── ENTREGABLE ── */
-  #entregable { background: var(--bg-card); }
-  .entregable-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
-  .entregable-list li {
-    display: flex; align-items: flex-start; gap: 14px;
-    background: var(--bg);
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 20px;
-  }
-  .entregable-icon {
-    width: 36px; height: 36px; flex-shrink: 0;
-    background: var(--primary);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 17px;
-  }
-  .entregable-list li strong {
-    display: block;
-    font-family: 'Syne', sans-serif;
-    font-size: 15px; font-weight: 700;
-    margin-bottom: 2px;
-  }
-  .entregable-list li span { font-size: 14px; color: var(--text-muted); }
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
 
-  .btn-cta {
-    display: inline-block;
-    background: var(--primary);
-    color: #fff;
-    border: none; cursor: pointer;
-    font-family: 'Syne', sans-serif;
-    font-size: 16px; font-weight: 700;
-    padding: 15px 34px;
-    border-radius: 10px;
-    letter-spacing: .02em;
-    transition: background .2s, transform .15s;
-  }
-  .btn-cta:hover { background: var(--primary-light); transform: translateY(-2px); }
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+.nav-wrap {
+  max-width: var(--max); margin: 0 auto; padding: 0 32px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-family: var(--serif);
+  font-size: 16px; font-weight: 600;
+  color: var(--p);
+  letter-spacing: .01em;
+}
+.nav-brand span {
+  display: inline-block;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--y);
+  margin: 0 4px 2px; vertical-align: middle;
+}
+.nav-cta {
+  font-family: var(--sans);
+  font-size: 13px; font-weight: 500; letter-spacing: .02em;
+  color: var(--p);
+  border: 1.5px solid rgba(54,19,150,.35);
+  padding: 8px 22px; border-radius: 100px;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.nav-cta:hover { background: var(--p); color: var(--white); border-color: var(--p); }
 
-  /* ── PARA QUIÉN ── */
-  .para-quien-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    align-items: center;
-  }
-  .para-quien-text p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.75; margin-bottom: 14px; }
-  .para-quien-check { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .para-quien-check li {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 15px; font-weight: 500;
-  }
-  .para-quien-check li::before {
-    content: '✓';
-    display: flex; align-items: center; justify-content: center;
-    width: 22px; height: 22px; flex-shrink: 0;
-    background: var(--accent);
-    color: var(--primary-dark);
-    font-weight: 800; font-size: 13px;
-    border-radius: 50%;
-  }
+/* ── WRAP ── */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
 
-  /* ── FORMULARIO ── */
-  #form { background: var(--primary); color: #fff; }
-  #form .section-header h2 { color: #fff; }
-  #form .section-header p { color: rgba(255,255,255,.7); }
-  #form .tag { background: rgba(250,204,21,.2); color: var(--accent); }
+/* ── HERO ── */
+.hero {
+  background: var(--p);
+  padding: 80px 32px 88px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 60% at 100% 0%,  rgba(250,204,21,.13) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 80% at -10% 110%, rgba(74,29,184,.6)  0%, transparent 50%),
+    radial-gradient(ellipse 30% 40% at 55% 100%,  rgba(54,19,150,.4)  0%, transparent 60%);
+}
+.hero::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; opacity: .03;
+  background-image:
+    linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.hero-inner {
+  max-width: var(--max); margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 64px;
+  align-items: center;
+  position: relative; z-index: 1;
+}
+.hero-badge {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--y);
+  border: 1px solid rgba(250,204,21,.3);
+  background: rgba(250,204,21,.07);
+  padding: 5px 14px; border-radius: 100px;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 18px;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+}
+.hero h1 em { font-style: italic; color: var(--y); font-weight: 400; }
+.hero-sub {
+  font-family: var(--sans);
+  font-size: 1.05rem; font-weight: 400;
+  color: rgba(255,255,255,.72);
+  margin-bottom: 32px; line-height: 1.7; max-width: 46ch;
+}
+.hero-benefits {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 40px;
+}
+.hero-benefits li {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--sans); font-size: 15px; font-weight: 400;
+  color: rgba(255,255,255,.85);
+}
+.hero-benefits li::before {
+  content: '';
+  display: block; flex-shrink: 0;
+  width: 20px; height: 2px;
+  background: var(--y); border-radius: 1px;
+}
 
-  .form-card {
-    background: rgba(255,255,255,.07);
-    border: 1.5px solid rgba(255,255,255,.15);
-    border-radius: 18px;
-    padding: 36px;
-    max-width: 620px;
-  }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-  .form-group.full { grid-column: 1 / -1; }
-  .form-group label {
-    font-size: 13px; font-weight: 500;
-    color: rgba(255,255,255,.75);
-    letter-spacing: .02em;
-  }
-  .form-group select,
-  .form-group input {
-    background: rgba(255,255,255,.1);
-    border: 1.5px solid rgba(255,255,255,.2);
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    padding: 11px 14px;
-    border-radius: 9px;
-    outline: none;
-    transition: border-color .2s;
-    appearance: none;
-    -webkit-appearance: none;
-  }
-  .form-group select:focus,
-  .form-group input:focus { border-color: var(--accent); }
-  .form-group select option { background: var(--primary-dark); color: #fff; }
-  .form-group input::placeholder { color: rgba(255,255,255,.4); }
+/* ── BUTTONS ── */
+.btn-main {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--y); color: var(--ink);
+  font-family: var(--sans); font-size: 14px; font-weight: 500;
+  letter-spacing: .04em;
+  padding: 15px 34px; border-radius: var(--r);
+  border: none; cursor: pointer;
+  transition: background .2s, box-shadow .2s, transform .15s;
+  box-shadow: 0 4px 20px rgba(250,204,21,.4);
+}
+.btn-main:hover {
+  background: #fcd93a;
+  box-shadow: 0 6px 28px rgba(250,204,21,.55);
+  transform: translateY(-1px);
+}
 
-  .btn-submit {
-    width: 100%;
-    background: var(--accent);
-    color: var(--primary-dark);
-    border: none; cursor: pointer;
-    font-family: 'Syne', sans-serif;
-    font-size: 16px; font-weight: 800;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 22px;
-    letter-spacing: .02em;
-    transition: background .2s, transform .15s;
-  }
-  .btn-submit:hover { background: #fbd842; transform: translateY(-2px); }
+/* Hero right card */
+.hero-card {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: var(--r-lg);
+  padding: 32px 28px;
+  backdrop-filter: blur(8px);
+}
+.hero-card-label {
+  font-family: var(--sans);
+  font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 18px; padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.hero-card-title {
+  font-family: var(--serif);
+  font-size: 1.2rem; font-weight: 500; color: var(--white);
+  margin-bottom: 20px;
+}
+.hero-card-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.hero-card-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-family: var(--sans); font-size: 14px; font-weight: 400;
+  color: rgba(255,255,255,.78); line-height: 1.55;
+}
+.hcl-num {
+  min-width: 24px; height: 24px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--y); color: var(--ink);
+  border-radius: 50%;
+  font-family: var(--sans); font-size: 11px; font-weight: 700;
+}
+.hero-card-note {
+  margin-top: 20px; padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.1);
+  font-family: var(--sans); font-size: 12px;
+  color: rgba(255,255,255,.35); line-height: 1.6;
+}
 
-  #form-success {
-    display: none;
-    background: rgba(250,204,21,.15);
-    border: 1.5px solid rgba(250,204,21,.4);
-    border-radius: 12px;
-    padding: 20px 24px;
-    font-size: 16px;
-    color: var(--accent);
-    font-weight: 500;
-    margin-top: 20px;
-    font-family: 'Syne', sans-serif;
-  }
+/* ── SECTIONS ── */
+section { padding: 80px 0; }
+section.bg-light { background: var(--bg); }
+section.bg-white { background: var(--white); }
+section.bg-sand  { background: var(--bg); }
+section.bg-navy  { background: var(--p); }
 
-  /* ── FAQ ── */
-  .faq-list { display: flex; flex-direction: column; gap: 16px; max-width: 680px; }
-  .faq-item {
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .faq-question {
-    width: 100%;
-    background: var(--bg-card);
-    border: none; cursor: pointer;
-    text-align: left;
-    font-family: 'Syne', sans-serif;
-    font-size: 16px; font-weight: 700;
-    color: var(--text);
-    padding: 20px 22px;
-    display: flex; justify-content: space-between; align-items: center; gap: 12px;
-    transition: background .2s;
-  }
-  .faq-question:hover { background: var(--bg); }
-  .faq-question .faq-icon {
-    width: 28px; height: 28px; flex-shrink: 0;
-    background: var(--primary);
-    color: #fff;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 300;
-    transition: transform .25s;
-  }
-  .faq-answer {
-    max-height: 0; overflow: hidden;
-    transition: max-height .35s ease, padding .25s;
-    background: var(--bg-card);
-    font-size: 15px; color: var(--text-muted); line-height: 1.7;
-    padding: 0 22px;
-  }
-  .faq-answer.open {
-    max-height: 300px;
-    padding: 0 22px 20px;
-  }
-  .faq-question.open .faq-icon { transform: rotate(45deg); }
+.sec-eyebrow {
+  font-family: var(--sans);
+  font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--p-mid); margin-bottom: 10px;
+}
+.sec-title {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  font-weight: 500; color: var(--ink);
+  margin-bottom: 10px; letter-spacing: -.015em;
+}
+.sec-sub {
+  font-family: var(--sans);
+  font-size: .97rem; color: var(--ink-3);
+  max-width: 54ch; line-height: 1.7; margin-bottom: 48px;
+}
+.divider {
+  width: 44px; height: 3px;
+  background: var(--y); border-radius: 2px;
+  margin: 0 0 44px;
+}
 
-  /* ── FOOTER ── */
-  footer {
-    background: var(--text);
-    color: rgba(255,255,255,.5);
-    text-align: center;
-    padding: 28px 24px;
-    font-size: 13px;
-  }
-  footer strong { color: rgba(255,255,255,.8); font-family: 'Syne', sans-serif; }
+/* ── QUÉ INCLUYE — PILLS ── */
+.pills { display: flex; flex-direction: column; gap: 14px; }
+.pill {
+  display: flex; align-items: center; gap: 24px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px 26px;
+  box-shadow: var(--sh-xs);
+  transition: box-shadow .2s, border-color .2s, transform .15s;
+}
+.pill:hover {
+  box-shadow: var(--sh-sm);
+  border-color: rgba(54,19,150,.22);
+  transform: translateX(3px);
+}
+.pill-num {
+  font-family: var(--serif);
+  font-size: 2rem; font-weight: 400;
+  color: rgba(54,19,150,.14);
+  line-height: 1; min-width: 40px; flex-shrink: 0;
+}
+.pill-title {
+  font-family: var(--serif);
+  font-size: 1.1rem; font-weight: 500; color: var(--ink); margin-bottom: 3px;
+}
+.pill-desc {
+  font-family: var(--sans);
+  font-size: 14px; font-weight: 400; color: var(--ink-3); line-height: 1.6;
+}
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 660px) {
-    .para-quien-inner { grid-template-columns: 1fr; }
-    .form-grid { grid-template-columns: 1fr; }
-    .form-group.full { grid-column: 1; }
-    .form-card { padding: 24px 18px; }
-  }
-  @media (max-width: 440px) {
-    .problem-grid { grid-template-columns: 1fr 1fr; }
-    .hero { padding: 60px 24px 70px; }
-    section { padding: 54px 0; }
-  }
+/* ── PASOS ── */
+.steps-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  counter-reset: step;
+}
+.step-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 28px 24px 26px;
+  box-shadow: var(--sh-sm);
+}
+.step-card::before {
+  counter-increment: step;
+  content: counter(step, upper-roman);
+  font-family: var(--sans); font-size: 11px; letter-spacing: .1em; font-weight: 500;
+  color: var(--p-mid);
+  display: block; margin-bottom: 18px; padding-bottom: 14px;
+  border-bottom: 2px solid var(--y); width: fit-content;
+}
+.step-title {
+  font-family: var(--serif);
+  font-size: 1.15rem; font-weight: 500; color: var(--ink); margin-bottom: 10px;
+}
+.step-desc {
+  font-family: var(--sans); font-size: 14px; font-weight: 400;
+  color: var(--ink-3); line-height: 1.65;
+}
+
+/* ── QUÉ OBTENDRÁS ── */
+.obtendras-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px;
+}
+.obtendras-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--p-pale); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 22px 20px;
+  transition: background .2s, border-color .2s;
+}
+.obtendras-item:hover { background: var(--p-light); border-color: rgba(54,19,150,.18); }
+.obtendras-dash {
+  width: 24px; height: 2px; flex-shrink: 0;
+  background: var(--y); border-radius: 1px; margin-top: 11px;
+}
+.obtendras-title {
+  font-family: var(--sans); font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 4px;
+}
+.obtendras-desc {
+  font-family: var(--sans); font-size: 13px; font-weight: 400; color: var(--ink-3); line-height: 1.6;
+}
+.obtendras-note {
+  font-family: var(--sans); font-size: 13px; color: var(--ink-4); font-weight: 400;
+  border-top: 1px solid rgba(0,0,0,.07); padding-top: 20px;
+}
+
+/* ── PRECIO ── */
+.precio-wrap {
+  display: grid; grid-template-columns: 1fr auto; gap: 60px; align-items: center;
+}
+.precio-heading {
+  font-family: var(--serif);
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-weight: 500; color: var(--white);
+  margin-bottom: 14px; letter-spacing: -.01em;
+}
+.precio-desc {
+  font-family: var(--sans); font-size: 15px; font-weight: 400;
+  color: rgba(255,255,255,.6); max-width: 44ch;
+}
+.precio-card {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--r-lg); padding: 36px 40px;
+  text-align: center; min-width: 260px; backdrop-filter: blur(6px);
+}
+.precio-tag {
+  font-family: var(--sans); font-size: 11px; letter-spacing: .1em;
+  text-transform: uppercase; font-weight: 500;
+  color: rgba(250,204,21,.75); margin-bottom: 14px;
+}
+.precio-amount {
+  font-family: var(--serif); font-size: 4.2rem; font-weight: 500; color: var(--white);
+  line-height: 1; margin-bottom: 6px;
+}
+.precio-amount sup { font-size: 1.6rem; vertical-align: super; margin-right: 2px; }
+.precio-note {
+  font-family: var(--sans); font-size: 13px; font-weight: 400;
+  color: rgba(255,255,255,.42); margin-bottom: 22px;
+}
+.btn-precio {
+  display: inline-flex; align-items: center; justify-content: center; width: 100%;
+  background: var(--y); color: var(--ink);
+  font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: .04em;
+  padding: 14px 24px; border-radius: var(--r); border: none; cursor: pointer;
+  transition: background .2s, box-shadow .2s;
+  box-shadow: 0 4px 16px rgba(250,204,21,.35);
+}
+.btn-precio:hover { background: #fcd93a; box-shadow: 0 6px 22px rgba(250,204,21,.5); }
+
+/* ── FORMULARIO ── */
+.form-section { background: var(--bg); border-top: 1px solid var(--border); }
+.form-header { margin-bottom: 40px; }
+.form-step-tag {
+  display: inline-block;
+  font-family: var(--sans); font-size: 11px; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--p-mid); background: var(--p-light);
+  padding: 4px 12px; border-radius: 100px; margin-bottom: 12px;
+}
+.form-title {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 500; color: var(--ink); margin-bottom: 8px;
+}
+.form-sub { font-family: var(--sans); font-size: .95rem; color: var(--ink-3); max-width: 50ch; }
+
+.form-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 24px; }
+.form-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 26px 22px; box-shadow: var(--sh-xs);
+}
+.form-card-title {
+  font-family: var(--sans); font-size: 11px; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--p-mid);
+  margin-bottom: 18px; padding-bottom: 13px;
+  border-bottom: 2px solid var(--y); width: fit-content;
+}
+.fg { display: flex; flex-direction: column; gap: 14px; }
+.fg label {
+  display: flex; flex-direction: column; gap: 5px;
+  font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink-2);
+}
+.fg input, .fg select, .fg textarea {
+  background: var(--bg); border: 1.5px solid rgba(54,19,150,.12);
+  border-radius: var(--r);
+  font-family: var(--sans); font-size: 14px; font-weight: 400; color: var(--ink);
+  padding: 10px 13px; outline: none;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+  appearance: none; -webkit-appearance: none; line-height: 1.5;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus {
+  border-color: var(--p-mid); background: var(--white);
+  box-shadow: 0 0 0 3px rgba(54,19,150,.08);
+}
+.fg input::placeholder, .fg textarea::placeholder { color: var(--ink-4); }
+.fg textarea { min-height: 72px; resize: vertical; }
+.fg select option { background: var(--white); color: var(--ink); }
+
+.check-group-lbl {
+  font-family: var(--sans); font-size: 13px; font-weight: 500;
+  color: var(--ink-2); margin-bottom: 6px;
+}
+.check-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
+.check-item {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--sans); font-size: 14px; font-weight: 400; color: var(--ink-2);
+  cursor: pointer;
+}
+.check-item input[type="checkbox"] {
+  width: 15px; height: 15px; flex-shrink: 0;
+  accent-color: var(--p); cursor: pointer;
+  padding: 0; border: none; background: transparent;
+  appearance: auto; -webkit-appearance: auto;
+}
+
+.form-footnote {
+  font-family: var(--sans); font-size: 13px; font-weight: 400; color: var(--ink-4);
+  line-height: 1.6; margin-bottom: 24px; max-width: 56ch;
+}
+.btn-form {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--y); color: var(--ink);
+  font-family: var(--sans); font-size: 14px; font-weight: 500; letter-spacing: .04em;
+  padding: 15px 38px; border-radius: var(--r); border: none; cursor: pointer;
+  transition: background .2s, box-shadow .2s, transform .15s;
+  box-shadow: 0 4px 18px rgba(250,204,21,.38);
+}
+.btn-form:hover {
+  background: #fcd93a; box-shadow: 0 6px 26px rgba(250,204,21,.55);
+  transform: translateY(-1px);
+}
+
+/* ── POST-ENVÍO ── */
+#post-envio {
+  display: none; background: var(--white);
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 52px 48px; box-shadow: var(--sh-md); max-width: 600px;
+}
+.post-icon {
+  width: 44px; height: 44px; background: var(--p-light);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 22px;
+}
+.post-title {
+  font-family: var(--serif); font-size: 1.85rem; font-weight: 500;
+  color: var(--ink); margin-bottom: 12px; letter-spacing: -.01em; line-height: 1.2;
+}
+.post-text {
+  font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink-3);
+  line-height: 1.75; margin-bottom: 28px; max-width: 44ch;
+}
+.btn-wa {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #25d366; color: var(--white);
+  font-family: var(--sans); font-size: 14px; font-weight: 500;
+  padding: 14px 28px; border-radius: var(--r); border: none; cursor: pointer;
+  transition: background .2s, box-shadow .2s;
+  box-shadow: 0 4px 16px rgba(37,211,102,.3); text-decoration: none;
+}
+.btn-wa:hover { background: #20bb5a; box-shadow: 0 6px 22px rgba(37,211,102,.4); }
+
+/* ── FAQ ── */
+.faq-list {
+  display: flex; flex-direction: column; gap: 0;
+  max-width: 700px; border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-sm);
+}
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item:last-child { border-bottom: none; }
+.faq-btn {
+  width: 100%; background: var(--white); border: none; cursor: pointer; text-align: left;
+  font-family: var(--serif); font-size: 1.05rem; font-weight: 500; color: var(--ink);
+  padding: 20px 26px;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  transition: background .15s; line-height: 1.4;
+}
+.faq-btn:hover { background: var(--p-pale); }
+.faq-icon {
+  flex-shrink: 0; width: 24px; height: 24px;
+  border: 1.5px solid var(--border); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 400; line-height: 1; color: var(--ink-4);
+  transition: transform .25s, background .15s, border-color .15s;
+}
+.faq-btn.open .faq-icon {
+  transform: rotate(45deg); background: var(--y); color: var(--ink); border-color: var(--y);
+}
+.faq-body {
+  max-height: 0; overflow: hidden; transition: max-height .35s ease;
+  font-family: var(--sans); font-size: 15px; font-weight: 400;
+  color: var(--ink-3); line-height: 1.7; padding: 0 26px; background: var(--white);
+}
+.faq-body.open { max-height: 220px; padding: 0 26px 22px; }
+
+/* ── FOOTER ── */
+footer { background: var(--ink); padding: 44px 32px; text-align: center; }
+.footer-brand {
+  font-family: var(--serif); font-size: 1.05rem; font-weight: 500;
+  color: rgba(255,255,255,.55); margin-bottom: 8px;
+}
+.footer-note {
+  font-family: var(--sans); font-size: 13px; font-weight: 400;
+  color: rgba(255,255,255,.26); line-height: 1.7;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 44px; }
+  .hero-card { max-width: 440px; }
+  .steps-grid { grid-template-columns: 1fr; gap: 14px; }
+  .obtendras-grid { grid-template-columns: 1fr; }
+  .form-cards { grid-template-columns: 1fr; }
+  .precio-wrap { grid-template-columns: 1fr; gap: 32px; }
+  .precio-card { min-width: unset; }
+}
+@media (max-width: 580px) {
+  .hero { padding: 56px 20px 64px; }
+  .wrap { padding: 0 20px; }
+  .nav-wrap { padding: 0 20px; }
+  section { padding: 60px 0; }
+  #post-envio { padding: 32px 20px; }
+  .form-card { padding: 20px 16px; }
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ══════ NAV ══════ -->
 <nav>
-  <div class="nav-inner">
-    <div class="nav-logo">Auditoría<span>IA</span></div>
-    <button class="btn-nav" onclick="scrollTo('#form')">Quiero mi auditoría</button>
+  <div class="nav-wrap">
+    <div class="nav-brand">Diagnóstico Operativo<span></span>Express</div>
+    <a href="#diagnostico" class="nav-cta">Iniciar diagnóstico</a>
   </div>
 </nav>
 
-<!-- HERO -->
+
+<!-- ══════ HERO ══════ -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="tag">Gratis · Sin compromiso</div>
-    <h1>Auditoría <em>IA Express</em><br>para Asesorías</h1>
-    <p>Detecta 3 automatizaciones gratuitas para ahorrar horas cada semana.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="scrollTo('#form')">Quiero mi auditoría</button>
-      <button class="btn-secondary" onclick="scrollTo('#entregable')">Ver qué incluye</button>
-    </div>
-  </div>
-</section>
 
-<!-- PROBLEMA -->
-<section>
-  <div class="container">
-    <div class="section-header">
-      <div class="tag">El problema</div>
-      <h2>¿Reconoces alguna de estas situaciones?</h2>
-      <p>Las asesorías pierden horas cada semana en tareas repetitivas que ya tienen solución.</p>
-    </div>
-    <div class="problem-grid">
-      <div class="problem-card"><p>Emails repetitivos que se responden siempre igual</p></div>
-      <div class="problem-card"><p>Documentos creados manualmente uno a uno</p></div>
-      <div class="problem-card"><p>Facturas llegando por múltiples canales sin orden</p></div>
-      <div class="problem-card"><p>Recordatorios fiscales gestionados a mano</p></div>
-    </div>
-  </div>
-</section>
+    <!-- Izquierda -->
+    <div>
+      <div class="hero-badge">Diagnóstico preliminar inmediato · Informe profesional final incluido</div>
 
-<!-- ENTREGABLE -->
-<section id="entregable" class="alt">
-  <div class="container">
-    <div class="section-header">
-      <div class="tag">Qué incluye</div>
-      <h2>Tu auditoría incluye exactamente esto</h2>
-      <p>Un análisis personalizado y accionable, listo en 24–48 horas.</p>
-    </div>
-    <ul class="entregable-list">
-      <li>
-        <div class="entregable-icon">🏆</div>
-        <div>
-          <strong>Top 3 automatizaciones para tu despacho</strong>
-          <span>Seleccionadas según tu flujo de trabajo y tamaño de equipo.</span>
-        </div>
-      </li>
-      <li>
-        <div class="entregable-icon">🛠️</div>
-        <div>
-          <strong>Herramientas nocode gratuitas</strong>
-          <span>Sin necesidad de programar ni contratar a nadie externo.</span>
-        </div>
-      </li>
-      <li>
-        <div class="entregable-icon">⏱️</div>
-        <div>
-          <strong>Estimación de tiempo ahorrado</strong>
-          <span>Cuántas horas semanales podrías recuperar al implementarlas.</span>
-        </div>
-      </li>
-      <li>
-        <div class="entregable-icon">🔄</div>
-        <div>
-          <strong>Flujo antes → después</strong>
-          <span>Visualización clara de cómo quedaría cada proceso automatizado.</span>
-        </div>
-      </li>
-    </ul>
-    <button class="btn-cta" onclick="scrollTo('#form')">Empezar auditoría</button>
-  </div>
-</section>
+      <h1>Diagnóstico Operativo<br><em>Express 48h</em></h1>
 
-<!-- PARA QUIÉN -->
-<section>
-  <div class="container">
-    <div class="para-quien-inner">
-      <div class="para-quien-text">
-        <div class="tag">Para quién es</div>
-        <h2>Pensado para asesorías pequeñas</h2>
-        <p>Si llevas una asesoría fiscal, laboral o contable con un equipo reducido, sabes que cada hora cuenta. Esta auditoría está diseñada específicamente para despachos que aún no han dado el salto a la automatización.</p>
-        <p>No necesitas conocimientos técnicos ni presupuesto extra. Solo responder unas preguntas.</p>
-      </div>
-      <ul class="para-quien-check">
-        <li>Despachos de 1 a 15 personas</li>
-        <li>Sin departamento de IT propio</li>
-        <li>Con procesos manuales repetitivos</li>
-        <li>Que quieren crecer sin contratar más</li>
-        <li>Con ganas de mejorar sin complicaciones</li>
+      <p class="hero-sub">
+        Detecta qué áreas de tu negocio puedes optimizar primero sin complicarte ni cambiar toda tu forma de trabajar.
+      </p>
+
+      <ul class="hero-benefits">
+        <li>Enfoque operativo y claro</li>
+        <li>Documento profesional listo para aplicar</li>
+        <li>Sin implementación ni procesos técnicos</li>
       </ul>
+
+      <a href="#diagnostico" class="btn-main">
+        Iniciar diagnóstico
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
     </div>
-  </div>
-</section>
 
-<!-- FORMULARIO -->
-<section id="form">
-  <div class="container">
-    <div class="section-header">
-      <div class="tag">Solicitar auditoría</div>
-      <h2>Cuéntanos sobre tu despacho</h2>
-      <p>Solo 5 preguntas rápidas. Recibirás tu propuesta personalizada en 24–48 horas.</p>
-    </div>
-    <div class="form-card">
-      <form id="auditoria-form" novalidate>
-        <div class="form-grid">
-
-          <div class="form-group">
-            <label for="tamano">Tamaño del despacho</label>
-            <select id="tamano" name="tamano" required>
-              <option value="" disabled selected>Selecciona…</option>
-              <option>1 persona (autónomo)</option>
-              <option>2–5 personas</option>
-              <option>6–10 personas</option>
-              <option>11–15 personas</option>
-              <option>Más de 15</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="software">Software principal</label>
-            <select id="software" name="software" required>
-              <option value="" disabled selected>Selecciona…</option>
-              <option>A3 / Wolters Kluwer</option>
-              <option>Sage</option>
-              <option>Holded</option>
-              <option>Contaplus / Sage 50</option>
-              <option>Excel / manual</option>
-              <option>Otro</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="emails">Emails diarios aproximados</label>
-            <select id="emails" name="emails" required>
-              <option value="" disabled selected>Selecciona…</option>
-              <option>Menos de 20</option>
-              <option>20–50</option>
-              <option>50–100</option>
-              <option>Más de 100</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="tiempo">Tiempo en tareas admin al día</label>
-            <select id="tiempo" name="tiempo" required>
-              <option value="" disabled selected>Selecciona…</option>
-              <option>Menos de 1 hora</option>
-              <option>1–2 horas</option>
-              <option>2–4 horas</option>
-              <option>Más de 4 horas</option>
-            </select>
-          </div>
-
-          <div class="form-group full">
-            <label for="email">Email de contacto</label>
-            <input type="email" id="email" name="email" placeholder="tu@correo.com" required>
-          </div>
-
+    <!-- Derecha — tarjeta -->
+    <div>
+      <div class="hero-card">
+        <div class="hero-card-label">Qué recibirás</div>
+        <div class="hero-card-title">Tres entregables profesionales</div>
+        <ul class="hero-card-list">
+          <li>
+            <span class="hcl-num">1</span>
+            <span>Diagnóstico preliminar de tu situación operativa actual</span>
+          </li>
+          <li>
+            <span class="hcl-num">2</span>
+            <span>Priorización operativa de las áreas con mayor impacto</span>
+          </li>
+          <li>
+            <span class="hcl-num">3</span>
+            <span>Informe profesional final en formato PDF estructurado</span>
+          </li>
+        </ul>
+        <div class="hero-card-note">
+          Servicio de diagnóstico exclusivo. No incluye implementación ni soporte técnico posterior.
         </div>
-        <button type="submit" class="btn-submit">Enviar y recibir propuesta →</button>
-      </form>
-      <div id="form-success">✅ Datos enviados. Recibirás tu auditoría en 24–48h.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════ QUÉ INCLUYE ══════ -->
+<section class="bg-white">
+  <div class="wrap">
+    <div class="sec-eyebrow">El diagnóstico</div>
+    <h2 class="sec-title">Qué incluye el diagnóstico operativo</h2>
+    <p class="sec-sub">Una evaluación estructurada y profesional de tu operativa, entregada en 48 horas.</p>
+    <div class="divider"></div>
+
+    <div class="pills">
+      <div class="pill">
+        <div class="pill-num">I</div>
+        <div>
+          <div class="pill-title">Diagnóstico preliminar</div>
+          <div class="pill-desc">Evaluación inmediata de la situación operativa a partir de la información inicial. Identifica fricciones, cuellos de botella y áreas prioritarias de mejora.</div>
+        </div>
+      </div>
+      <div class="pill">
+        <div class="pill-num">II</div>
+        <div>
+          <div class="pill-title">Análisis operativo</div>
+          <div class="pill-desc">Revisión detallada de los procesos, flujos de trabajo y herramientas actuales. Priorización según impacto estimado y facilidad de mejora.</div>
+        </div>
+      </div>
+      <div class="pill">
+        <div class="pill-num">III</div>
+        <div>
+          <div class="pill-title">Informe profesional final</div>
+          <div class="pill-desc">Documento PDF estructurado con hallazgos, recomendaciones prácticas y un plan de acción claro. Listo para compartir con tu equipo o aplicar directamente.</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
-<section class="alt">
-  <div class="container">
-    <div class="section-header">
-      <div class="tag">FAQ</div>
-      <h2>Preguntas frecuentes</h2>
+
+<!-- ══════ TRES PASOS ══════ -->
+<section class="bg-sand">
+  <div class="wrap">
+    <div class="sec-eyebrow">El proceso</div>
+    <h2 class="sec-title">Un proceso claro en tres pasos</h2>
+    <p class="sec-sub">Sin reuniones previas, sin demoras. El diagnóstico se inicia y completa en 48 horas.</p>
+    <div class="divider"></div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-title">Inicias el diagnóstico</div>
+        <p class="step-desc">Completas el formulario de información operativa inicial. Son menos de diez minutos y no requiere preparación previa.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-title">Evaluación operativa</div>
+        <p class="step-desc">Nuestro equipo analiza tu información operativa, identifica patrones y prioriza las áreas de mayor impacto para tu negocio.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-title">Recibes el informe final</div>
+        <p class="step-desc">En 48 horas recibes tu informe profesional completo en PDF. Con diagnóstico, priorización y recomendaciones prácticas listas para aplicar.</p>
+      </div>
     </div>
+  </div>
+</section>
+
+
+<!-- ══════ QUÉ OBTENDRÁS ══════ -->
+<section class="bg-white">
+  <div class="wrap">
+    <div class="sec-eyebrow">Entregables</div>
+    <h2 class="sec-title">Qué vas a obtener exactamente</h2>
+    <p class="sec-sub">Un informe profesional y accionable, sin tecnicismos innecesarios.</p>
+    <div class="divider"></div>
+
+    <div class="obtendras-grid">
+      <div class="obtendras-item">
+        <div class="obtendras-dash"></div>
+        <div>
+          <div class="obtendras-title">Diagnóstico preliminar inmediato</div>
+          <div class="obtendras-desc">Evaluación de la situación actual de tu operativa, con identificación de las principales fricciones.</div>
+        </div>
+      </div>
+      <div class="obtendras-item">
+        <div class="obtendras-dash"></div>
+        <div>
+          <div class="obtendras-title">Priorización clara</div>
+          <div class="obtendras-desc">Las áreas y procesos ordenados por impacto potencial y facilidad de mejora, para saber por dónde empezar.</div>
+        </div>
+      </div>
+      <div class="obtendras-item">
+        <div class="obtendras-dash"></div>
+        <div>
+          <div class="obtendras-title">Informe PDF estructurado</div>
+          <div class="obtendras-desc">Documento profesional con todos los hallazgos, listo para compartir internamente o con colaboradores externos.</div>
+        </div>
+      </div>
+      <div class="obtendras-item">
+        <div class="obtendras-dash"></div>
+        <div>
+          <div class="obtendras-title">Recomendaciones prácticas</div>
+          <div class="obtendras-desc">Acciones concretas y ordenadas, descritas sin tecnicismos y adaptadas a tu contexto operativo.</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="obtendras-note">No incluye implementación ni soporte técnico. El informe es el entregable final del servicio.</p>
+  </div>
+</section>
+
+
+<!-- ══════ PRECIO ══════ -->
+<section class="bg-navy">
+  <div class="wrap">
+    <div class="precio-wrap">
+      <div>
+        <div class="sec-eyebrow" style="color:var(--gold-2)">Inversión</div>
+        <h2 class="precio-heading">Diagnóstico Operativo<br>Express 48h</h2>
+        <p class="precio-desc">Un único pago. Sin suscripciones, sin costes ocultos. Informe profesional final incluido y entregado en 48 horas.</p>
+      </div>
+      <div class="precio-card">
+        <div class="precio-tag">Pago único</div>
+        <div class="precio-amount"><sup>€</sup>97</div>
+        <div class="precio-note">Informe profesional final incluido</div>
+        <a href="#diagnostico" class="btn-precio">Iniciar diagnóstico</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════ FORMULARIO ══════ -->
+<section class="form-section" id="diagnostico">
+  <div class="wrap">
+
+    <div class="form-header" id="form-header">
+      <div class="form-step-tag">Paso 1 de 3 — Información operativa inicial</div>
+      <h2 class="form-title">Inicia tu diagnóstico operativo</h2>
+      <p class="form-sub">Completa la información inicial. Menos de diez minutos, sin preparación previa.</p>
+    </div>
+
+    <form id="diag-form" novalidate>
+      <div class="form-cards">
+
+        <!-- Tarjeta 1: Información del negocio -->
+        <div class="form-card">
+          <div class="form-card-title">Información del negocio</div>
+          <div class="fg">
+            <label>
+              Tipo de negocio
+              <select name="tipo_negocio" required>
+                <option value="" disabled selected>Selecciona…</option>
+                <option>Asesoría / Consultoría</option>
+                <option>Agencia de servicios</option>
+                <option>Despacho profesional</option>
+                <option>Comercio / Retail</option>
+                <option>Empresa de servicios B2B</option>
+                <option>Otro</option>
+              </select>
+            </label>
+            <label>
+              Número de empleados
+              <select name="empleados" required>
+                <option value="" disabled selected>Selecciona…</option>
+                <option>Autónomo / 1 persona</option>
+                <option>2–5 personas</option>
+                <option>6–15 personas</option>
+                <option>16–30 personas</option>
+                <option>Más de 30</option>
+              </select>
+            </label>
+            <label>
+              Número de clientes activos
+              <select name="clientes" required>
+                <option value="" disabled selected>Selecciona…</option>
+                <option>Menos de 20</option>
+                <option>20–50</option>
+                <option>50–150</option>
+                <option>Más de 150</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <!-- Tarjeta 2: Operativa diaria -->
+        <div class="form-card">
+          <div class="form-card-title">Operativa diaria</div>
+          <div class="fg">
+            <label>
+              Emails gestionados al día
+              <select name="emails_dia" required>
+                <option value="" disabled selected>Selecciona…</option>
+                <option>Menos de 20</option>
+                <option>20–50</option>
+                <option>50–100</option>
+                <option>Más de 100</option>
+              </select>
+            </label>
+            <label>
+              Documentos repetitivos por semana
+              <select name="docs_semana" required>
+                <option value="" disabled selected>Selecciona…</option>
+                <option>Menos de 5</option>
+                <option>5–15</option>
+                <option>15–40</option>
+                <option>Más de 40</option>
+              </select>
+            </label>
+            <label>
+              Principal fricción operativa
+              <textarea name="friccion" rows="4" placeholder="Describe brevemente dónde se pierde más tiempo en tu operativa diaria…" required></textarea>
+            </label>
+          </div>
+        </div>
+
+        <!-- Tarjeta 3: Herramientas -->
+        <div class="form-card">
+          <div class="form-card-title">Herramientas actuales</div>
+          <div class="fg">
+            <div>
+              <div class="check-group-lbl">Correo electrónico</div>
+              <div class="check-group">
+                <label class="check-item"><input type="checkbox" name="herramienta" value="gmail"> Gmail</label>
+                <label class="check-item"><input type="checkbox" name="herramienta" value="outlook"> Outlook</label>
+                <label class="check-item"><input type="checkbox" name="herramienta" value="otro-email"> Otro</label>
+              </div>
+            </div>
+            <div>
+              <div class="check-group-lbl">Almacenamiento y documentos</div>
+              <div class="check-group">
+                <label class="check-item"><input type="checkbox" name="herramienta" value="gdrive"> Google Drive</label>
+                <label class="check-item"><input type="checkbox" name="herramienta" value="onedrive"> OneDrive / SharePoint</label>
+                <label class="check-item"><input type="checkbox" name="herramienta" value="otro-storage"> Otro</label>
+              </div>
+            </div>
+            <div>
+              <div class="check-group-lbl">Gestión de datos</div>
+              <div class="check-group">
+                <label class="check-item"><input type="checkbox" name="herramienta" value="excel"> Excel / Hojas de cálculo</label>
+                <label class="check-item"><input type="checkbox" name="herramienta" value="otro-datos"> Otro</label>
+              </div>
+            </div>
+            <label>
+              Email de contacto
+              <input type="email" name="email" placeholder="tu@empresa.com" required>
+            </label>
+          </div>
+        </div>
+
+      </div><!-- /form-cards -->
+
+      <p class="form-footnote">
+        Este es el primer paso del diagnóstico operativo. Tus respuestas permiten generar la evaluación preliminar y estructurar el informe profesional final.
+      </p>
+
+      <button type="submit" class="btn-form">
+        Continuar diagnóstico
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </form>
+
+    <!-- ── POST-ENVÍO (oculto por defecto) ── -->
+    <div id="post-envio">
+      <div class="post-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M4 10l4.5 4.5 7.5-8" stroke="#1c2b4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3 class="post-title">Evaluación preliminar<br>en preparación</h3>
+      <p class="post-text">
+        Gracias. Hemos recibido tu información operativa inicial. Estamos generando tu evaluación preliminar y preparando la estructura del informe profesional.
+      </p>
+      <a href="https://wa.me/34TU_NUMERO_AQUI?text=Hola,%20acabo%20de%20completar%20el%20Diagn%C3%B3stico%20Operativo%20Express%2048h.%20Quiero%20continuar%20con%20el%20siguiente%20paso." class="btn-wa" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Continuar por WhatsApp
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════ FAQ ══════ -->
+<section class="bg-white">
+  <div class="wrap">
+    <div class="sec-eyebrow">Preguntas frecuentes</div>
+    <h2 class="sec-title">Resolvemos tus dudas</h2>
+    <p class="sec-sub" style="margin-bottom:44px;">Todo lo que necesitas saber antes de iniciar tu diagnóstico.</p>
+    <div class="divider"></div>
+
     <div class="faq-list">
+
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          ¿La auditoría es realmente gratuita?
+        <button class="faq-btn" type="button" onclick="toggleFaq(this)">
+          ¿El diagnóstico incluye implementación?
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-answer">
-          Sí, completamente gratuita y sin compromiso. Recibirás un análisis personalizado con 3 automatizaciones recomendadas para tu despacho, las herramientas para implementarlas y la estimación de tiempo que podrías ahorrar. No hay coste oculto ni venta posterior forzosa.
+        <div class="faq-body">
+          No. El Diagnóstico Operativo Express es un servicio de análisis y consultoría. El entregable final es el informe profesional en PDF con diagnóstico, priorización y recomendaciones. La implementación de las mejoras queda fuera del alcance de este servicio.
         </div>
       </div>
+
       <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">
-          ¿Necesito conocimientos técnicos para aplicar las recomendaciones?
+        <button class="faq-btn" type="button" onclick="toggleFaq(this)">
+          ¿Para qué tipo de negocios es este diagnóstico?
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-answer">
-          No. Todas las automatizaciones recomendadas utilizan herramientas nocode diseñadas para personas sin perfil técnico. Incluimos guías paso a paso y seleccionamos siempre las opciones más sencillas de implementar para un despacho como el tuyo.
+        <div class="faq-body">
+          Es especialmente útil para pequeñas y medianas empresas, despachos profesionales, asesorías y agencias de servicios que sienten que su operativa diaria consume más tiempo del necesario. No se requiere ningún conocimiento previo ni preparación especial.
         </div>
       </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" type="button" onclick="toggleFaq(this)">
+          ¿Cuánto tiempo tarda en llegar el informe?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          El diagnóstico preliminar está disponible de forma inmediata tras completar el formulario. El informe profesional final en PDF se entrega en un plazo máximo de 48 horas hábiles desde que se confirma la información.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" type="button" onclick="toggleFaq(this)">
+          ¿Necesito conocimientos técnicos?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          En absoluto. El diagnóstico se realiza a partir de información operativa general: cómo trabajas, qué herramientas usas y dónde pierdes más tiempo. El informe está redactado en lenguaje claro y práctico, sin tecnicismos.
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+
+<!-- ══════ FOOTER ══════ -->
 <footer>
-  <strong>Auditoría IA Express para Asesorías</strong><br>
-  <span>© 2025 · Todos los derechos reservados</span>
+  <div class="footer-brand">Diagnóstico Operativo Express 48h</div>
+  <div class="footer-note">
+    Servicio de diagnóstico profesional · No incluye implementación ni soporte técnico<br>
+    © 2025 · Todos los derechos reservados
+  </div>
 </footer>
 
+
 <script>
-  // Scroll suave a selector
-  function scrollTo(selector) {
-    const el = document.querySelector(selector);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+/* ── FAQ accordion ── */
+function toggleFaq(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.faq-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.faq-btn').forEach(b => b.classList.remove('open'));
+  if (!isOpen) {
+    body.classList.add('open');
+    btn.classList.add('open');
   }
+}
 
-  // FAQ toggle
-  function toggleFaq(btn) {
-    const answer = btn.nextElementSibling;
-    const isOpen = answer.classList.contains('open');
-    // Cerrar todos
-    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
-    document.querySelectorAll('.faq-question').forEach(b => b.classList.remove('open'));
-    // Abrir si estaba cerrado
-    if (!isOpen) {
-      answer.classList.add('open');
-      btn.classList.add('open');
-    }
-  }
-
-  // Formulario
-  document.getElementById('auditoria-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const form = this;
-    const success = document.getElementById('form-success');
-    // Mostrar mensaje
-    success.style.display = 'block';
-    // Limpiar campos
-    form.reset();
-    // Scroll al mensaje
-    success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
+/* ── Form submit → show post-envío block ── */
+document.getElementById('diag-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('form-header').style.display = 'none';
+  const post = document.getElementById('post-envio');
+  post.style.display = 'block';
+  setTimeout(() => post.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+});
 </script>
+
 </body>
 </html>
